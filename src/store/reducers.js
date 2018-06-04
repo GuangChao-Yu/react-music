@@ -1,0 +1,14 @@
+import initState from './state'
+import * as types from './action-types'
+
+export function disc(state = initState.disc, action) {
+  switch (action.type) {
+    case types.SET_DISC:
+      return {
+        ...state,
+        ...action.payload
+      }
+    default:
+      return state
+  }
+}

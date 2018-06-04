@@ -1,4 +1,6 @@
 import React, {Component} from 'react'
+import {connect} from 'react-redux'
+import {Route} from 'react-router-dom'
 
 import {getRecommend, getDiscList} from 'api/recommend'
 import {ERR_OK} from 'api/config'
@@ -8,6 +10,8 @@ import Scroll from '../../components/scroll/scroll'
 import Swiper from 'swiper'
 
 import LazyLoad, {forceCheck} from 'react-lazyload'
+
+import {setDisc} from 'store/action'
 
 import './recommend.styl'
 import 'swiper/dist/css/swiper.css'
@@ -21,7 +25,7 @@ class Recommend extends Component {
       discList: []
     }
   }
-  componentWillMount() {
+  componentDidMount() {
     getRecommend().then(res => {
       if (res.code === ERR_OK) {
         this.setState(
@@ -41,7 +45,6 @@ class Recommend extends Component {
         )
       }
     })
-
     getDiscList().then(res => {
       if (res.code === ERR_OK) {
         this.setState({
@@ -51,13 +54,18 @@ class Recommend extends Component {
     })
   }
   shouldComponentUpdate(nextProps, nextState) {
-    console.log(nextState)
     return true
   }
 
+  selectAlbum(value) {
+    const {match} = this.props
+    const url = `${match.url}/${value.dissid}`
+    this.props.history.push(url)
+    this.props.setDisc(value)
+  }
+
   render() {
-    let {match} = this.props
-    console.log(this.state.recommends)
+    // let {match} = this.props
     return (
       <div className="recommend-wrapper" ref="recommends">
         <Scroll
@@ -66,22 +74,60 @@ class Recommend extends Component {
           data={this.state.discList}
           onScroll={() => forceCheck()}
         >
-          <div className="swiper-container">
-            <div className="swiper-wrapper">
-              {this.state.recommends.map((v, i) => {
-                ;<div className="swiper-slide" key={v.linkUrl}>
-                  <a href={v.linkUrl} className="slider-nav">
-                    <img src={v.picUrl} width="100%" height="100%" alt="" />
-                  </a>
-                </div>
-              })}
+          <div>
+            <div className="swiper-container">
+              <div className="swiper-wrapper">
+                {this.state.recommends.map((v, i) => {
+                  return (
+                    <div className="swiper-slide" key={v.linkUrl}>
+                      <a href={v.linkUrl} className="slider-nav">
+                        <img src={v.picUrl} width="100%" height="100%" alt="" />
+                      </a>
+                    </div>
+                  )
+                })}
+              </div>
+              <div className="swiper-pagination" />
             </div>
-            <div className="swiper-pagination" />
+            <div className="recommend-list">
+              <h1 className="list-title">热门歌单推荐</h1>
+              <ul>
+                {this.state.discList.length
+                  ? this.state.discList.map((v, i) => {
+                      return (
+                        <li
+                          className="item"
+                          key={v.dissname}
+                          onClick={() => this.selectAlbum(v)}
+                        >
+                          <div className="icon">
+                            <LazyLoad height={60}>
+                              <img
+                                src={v.imgurl}
+                                width="60"
+                                height="60"
+                                alt=""
+                              />
+                            </LazyLoad>
+                          </div>
+                          <div className="text">
+                            <h2 className="name">{v.creator.name}</h2>
+                            <p className="desc">{v.dissname}</p>
+                          </div>
+                        </li>
+                      )
+                    })
+                  : null}
+              </ul>
+            </div>
           </div>
         </Scroll>
+        {!this.state.discList.length ? <Loading title="正在加载..." /> : null}
       </div>
     )
   }
 }
+
+Recommend = connect(state => state, {setDisc})(Recommend)
 
 export default Recommend
