@@ -16,6 +16,10 @@ import {setDisc} from 'store/action'
 import './recommend.styl'
 import 'swiper/dist/css/swiper.css'
 
+@connect(
+  state => state,
+  {setDisc}
+)
 class Recommend extends Component {
   constructor(props) {
     super(props)
@@ -128,6 +132,9 @@ class Recommend extends Component {
   }
 }
 
-Recommend = connect(state => state, {setDisc})(Recommend)
+// Recommend = connect(
+//   state => state,
+//   {setDisc}
+// )(Recommend)
 
 export default Recommend

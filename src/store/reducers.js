@@ -12,3 +12,15 @@ export function disc(state = initState.disc, action) {
       return state
   }
 }
+
+export function singer(state = initState.singer, action) {
+  switch (action.type) {
+    case types.SET_SINGER:
+      return {
+        ...state,
+        ...action.payload
+      }
+    default:
+      return state
+  }
+}

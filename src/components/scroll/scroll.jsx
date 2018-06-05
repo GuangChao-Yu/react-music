@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import BScroll from 'better-scroll'
 import './scroll.styl'
 
-class scroll extends Component {
+class Scroll extends Component {
   constructor(props) {
     super(props)
     this.refresh = this.refresh.bind(this)
@@ -98,7 +98,7 @@ class scroll extends Component {
   }
 }
 
-scroll.propTypes = {
+Scroll.propTypes = {
   data: PropTypes.array,
   probeType: PropTypes.number,
   click: PropTypes.bool,
@@ -109,7 +109,7 @@ scroll.propTypes = {
   refreshDelay: PropTypes.number
 }
 
-scroll.defaultProps = {
+Scroll.defaultProps = {
   data: null,
   probeType: 1,
   click: true,
@@ -120,4 +120,4 @@ scroll.defaultProps = {
   refreshDelay: 20
 }
 
-export default scroll
+export default Scroll

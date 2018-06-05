@@ -11,7 +11,10 @@ import {
 } from 'react-redux'
 import thunk from 'redux-thunk'
 import reducer from 'store/index'
+import initReactFastclick from 'react-fastclick'
 import './common/style/index.styl'
+
+initReactFastclick();
 
 const store = createStore(
   reducer,

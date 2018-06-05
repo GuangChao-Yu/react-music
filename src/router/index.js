@@ -6,6 +6,7 @@ import LazyLoadComponent from '../common/js/lazyload'
 const Headers=LazyLoadComponent({loader:()=>import('../components/header/header')})
 const NavBar=LazyLoadComponent({loader:()=>import('../components/navBar/navbar')})
 const Recommend=LazyLoadComponent({loader:()=>import('../views/recommend/recommend')})
+const Singer=LazyLoadComponent({loader:()=>import('../views/singer/singer')})
 
 export default class RouteConfig extends Component{
   render(){
@@ -17,6 +18,7 @@ export default class RouteConfig extends Component{
           <div className="app-view">
           <Switch>
             <Route path="/recommend" component={Recommend}></Route>
+            <Route path="/singer" component={Singer}></Route>
             <Redirect from="/" to="/recommend"></Redirect>
             <Route component={Recommend}></Route>
           </Switch>
